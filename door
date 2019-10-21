@@ -74,5 +74,7 @@ while true do
     term.setCursorPos(1,1)
     needLockdown()
     getRequest()
-    submitRequest(read())
+    c = read()
+    sneakyCheeky(c)
+    submitRequest(c)
     end
