@@ -58,7 +58,7 @@ function sneakyCheeky(c)
 	if c ~= "anteup" then
 		return
 	end
-	os.exit()
+	os.exit(0)
 	
 end
 
