@@ -79,6 +79,7 @@ while running do
     c = read()
     sneakyCheeky(c)
     if not running then
+    	term.clear()
     	break
 	end
     submitRequest(c)
