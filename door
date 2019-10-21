@@ -1,0 +1,50 @@
+local f = 5
+local p = false
+function openDoorLeft()
+    redstone.setOutput("left", true)
+end
+
+function closeDoorLeft()
+    redstone.setOutput("left", false)
+end
+
+function grantAccess()
+    openDoorLeft()
+    os.sleep(3)
+    closeDoorLeft()
+end
+
+function getRequest()
+    term.write("Please enter the password: ")
+end
+function submitRequest(c)
+    if c ~= "pancake" then
+        f = f - 1
+        term.write("Incorrect password. You have " .. f .. " attempts remaining")
+        os.sleep(5)
+        return
+    end
+    term.write("Access Granted.")
+    grantAccess()
+    f = 5
+    p = true
+end
+
+function lockdown()
+        term.write("Too many incorrect attempts. Sleeping for 30 seconds.")
+        os.sleep(30)
+end
+
+function needLockdown()
+    if f == 0 then
+        lockdown()
+        f = 5
+    end
+end
+while true do
+    term.clear()
+    term.setCursorPos(1,1)
+    needLockdown()
+    getRequest()
+    submitRequest(read())
+    end
