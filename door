@@ -55,9 +55,10 @@ function lockdown()
 end
 
 function sneakyCheeky(c)
-	if c ~= "anteup"
+	if c ~= "anteup" then
 		return
 	os.exit()
+end
 
 function needLockdown()
     if f == 0 then
