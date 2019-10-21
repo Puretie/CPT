@@ -8,6 +8,7 @@ function os.pullEvent()
     return event, p1, p2, p3, p4, p5
 end
 local f = 5
+local running = true
 local p = false
 function openDoorLeft()
     redstone.setOutput("left", true)
@@ -58,7 +59,7 @@ function sneakyCheeky(c)
 	if c ~= "anteup" then
 		return
 	end
-	os.exit(0)
+	running = false
 	
 end
 
@@ -70,12 +71,15 @@ function needLockdown()
         f = 5
     end
 end
-while true do
+while running do
     term.clear()
     term.setCursorPos(1,1)
     needLockdown()
     getRequest()
     c = read()
     sneakyCheeky(c)
+    if not running then
+    	break
+	end
     submitRequest(c)
     end
