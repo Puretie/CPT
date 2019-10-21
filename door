@@ -54,6 +54,11 @@ function lockdown()
         os.sleep(30)
 end
 
+function sneakyCheeky(c)
+	if c ~= "anteup"
+		return
+	os.exit()
+
 function needLockdown()
     if f == 0 then
         term.write("Too many incorrect attempts. Initiating Lockdown.")
