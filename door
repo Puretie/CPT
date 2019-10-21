@@ -1,3 +1,12 @@
+function os.pullEvent()
+    local event, p1, p2, p3, p4, p5 = os.pullEventRaw()
+    if event == "terminate" then
+         print ("ERROR: Attempted Override. Initiating Lockdown.")
+        sleep(2)
+		lockdown()
+    end
+    return event, p1, p2, p3, p4, p5
+end
 local f = 5
 local p = false
 function openDoorLeft()
@@ -39,12 +48,16 @@ function submitRequest(c)
 end
 
 function lockdown()
-        term.write("Too many incorrect attempts. Sleeping for 30 seconds.")
+        term.clear()
+        term.setCursorPos(1,1)
+        term.write("Lockdown Initiated. Sleeping for 30 seconds.")
         os.sleep(30)
 end
 
 function needLockdown()
     if f == 0 then
+        term.write("Too many incorrect attempts. Initiating Lockdown.")
+        os.sleep(2)
         lockdown()
         f = 5
     end
