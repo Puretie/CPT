@@ -1,0 +1,97 @@
+local component = require("component")
+local sides = require("sides")
+local term = require("term")
+local colors = require("colors")
+local gpu = component.gpu
+local r = component.redstone
+door = component.os_doorcontroller
+
+local f = 3
+local running = true
+local p = false
+
+function openDoor()
+    door.open()
+end
+
+function closeDoor()
+  door.close()    
+end
+
+function grantAccess()
+    openDoor()
+    os.sleep(3)
+    closeDoor()
+end
+
+function getRequest()
+    term.setCursor(49,12)
+    gpu.set(22, 12, "Please enter the password: ")
+end
+function submitRequest(c)
+    if c ~= "pancake" then
+        f = f - 1
+        gpu.setForeground(colors.red, true)
+        gpu.set(15, 15, "Incorrect password. You have " .. f .. " attempts remaining")
+        os.sleep(2)
+        gpu.setForeground(colors.white, true)
+        return
+    end
+    gpu.set(30, 15, "Access Granted.")
+    grantAccess()
+    f = 3
+    p = true
+end
+
+function lockdown()
+        term.clear()
+        gpu.setBackground(colors.red, true)
+        gpu.setForeground(colors.white, true)
+        gpu.fill(1, 1, 100, 100, " ")
+        gpu.set(18, 12, "Lockdown Initiated. Sleeping for 30 seconds.")
+        r.setBundledOutput(sides.back, { [colors.lightblue] = 15} )
+        os.sleep(30)
+        term.clear()
+        gpu.setBackground(colors.lightblue, true)
+        gpu.setForeground(colors.white, true)
+        gpu.fill(1, 1, 100, 100, " ")
+        gpu.set(30, 1, "Puretie's Shithole")
+        r.setBundledOutput(sides.back, { [colors.lightblue] = 0} )
+end
+
+function sneakyCheeky(c)
+	if c ~= "anteup" then
+		return
+	end
+	running = false
+	
+gpu.setForeground(colors.white, true)
+gpu.setBackground(colors.black, true)
+gpu.fill(1, 1, 100, 100, " ")
+end
+
+function needLockdown()
+    if f == 0 then
+        gpu.setForeground(colors.red, true)
+        gpu.set(18, 15, "Too many incorrect attempts. Initiating Lockdown.")
+        os.sleep(3)
+        lockdown()
+        f = 3
+    end
+end
+while running do
+    term.clear()
+    gpu.setBackground(colors.lightblue, true)
+    gpu.setForeground(colors.black, true)
+    gpu.fill(1, 1, 100, 100, " ")
+    gpu.set(30, 1, "Puretie's Shithole")
+    needLockdown()
+    getRequest()
+    c = io.read()
+    sneakyCheeky(c)
+    if not running then
+    	term.clear()
+    	break
+	end
+    submitRequest(c)
+    end
